@@ -1,0 +1,18 @@
+body{
+   background: #234123;
+}
+.blok-glowny{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.blok-gra{
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 10px;
+}
+.kratki{
+    border: 2px solid #000000;
+    border-radius: 10px;
+}

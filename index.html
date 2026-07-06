@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gierka</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <div class="blok-glowny" id="blok-glowny">
+            <div class="czasomierz">
+
+            </div>
+            <div class="blok-gra" id="blok-gra">
+                    <div id="kratka-1" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="kratka-2" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="kratka-3" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="kratka-4" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="kratka-5" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="kratka-6" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="kratka-7" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="kratka-8" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="kratka-9" class="kratki" onclick="postawFigure(this)"></div>
+            </div>
+        </div>
+        <div class="blok-wynik" id="blok-wynik" >
+
+        </div>
+    </main>
+    <script>
+        const blokGlowny = document.querySelector("#blok-glowny");
+        const blokWynik = document.querySelector("#blok-wynik");
+        class gracz{
+            constructor(nazwa,wynik,figura,numerGracza){
+                this.nazwa = nazwa;
+                this.wynik = wynik;
+                this.figura = figura;
+                this.numerGracza = numerGracza;
+            }
+        }
+        class parametryGry{
+            constructor(aktualnyGracz,wygrana,remis,numerAktualnegoGracza){
+                this.aktualnyGracz = aktualnyGracz;
+                this.wygrana = wygrana;
+                this.remis = remis;
+                this.numerAktualnegoGracza = numerAktualnegoGracza;
+            }
+        }
+        class parametryKratek{
+            constructor(kratka,figura){
+                this.kratka = kratka;
+                this.figura = figura;
+            }
+        }
+        class parametryCzasomierza{
+            constructor(czasomierz,sekundy){
+                this.czasomierz = czasomierz;
+                this.sekundy = sekundy;
+            }
+        }
+        gracz1 = new gracz("Gracz 1",0,"X",1);
+        gracz2 = new gracz("Gracz 2",0,"O",2);
+        function czasomierz(iloscMinut){
+            let sekundy = iloscMinut * 60;
+        }
+        function stopCzasomierz(mojCzasomierz){
+            clearInterval(mojCzasomierz)
+        }
+        function startujGre() {
+            parametryGry = new parametryGry(1,false,false);
+            
+        }
+        function zmianaGracza(){
+            if(parametryGry.aktualnyGracz === 1){
+                parametryGry.aktualnyGracz = 2;
+            }
+            else{
+                parametryGry.aktualnyGracz = 1;
+            }
+        }
+        function sprawdzenieAktualnejFigury(){
+             let figura = "";
+            if(parametryGry.aktualnyGracz === 1){
+                figura = "krzyzyk.png";
+            }
+            else{
+                figura = "kolko.png";
+            }
+            return figura;
+        }
+        function sprawdzenieWygranej(){
+            document.querySelectorAll(".kratki").forEach((kratka) => {
+                if(kratka.innerHTML === ""){
+                    return;
+                }
+            })
+        }
+        function postawFigure(kratka){
+           let figura = sprawdzenieAktualnejFigury();
+           if(kratka.innerHTML !== ""){
+                return;
+            }
+            kratka.innerHTML = `<img src="${figura}" alt="${figura === "krzyzyk.png" ? "Krzyżyk" : "Kółko"}" draggable="false">`;
+            zmianaGracza()
+        }
+        
+        startujGre()
+    </script>
+</body>
+</html>
