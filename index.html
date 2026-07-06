@@ -91,8 +91,8 @@
         }
         function sprawdzenieWygranej(){
             document.querySelectorAll(".kratki").forEach((kratka) => {
-                if(kratka.innerHTML === ""){
-                    return;
+                if(kratka.innerHTML !== ""){
+                    
                 }
             })
         }
@@ -101,7 +101,7 @@
            if(kratka.innerHTML !== ""){
                 return;
             }
-            kratka.innerHTML = `<img src="${figura}" alt="${figura === "krzyzyk.png" ? "Krzyżyk" : "Kółko"}" draggable="false">`;
+            kratka.innerHTML = `<img src="img/${figura}" alt="${figura === "krzyzyk.png" ? "Krzyżyk" : "Kółko"}" draggable="false">`;
             zmianaGracza()
         }
         
