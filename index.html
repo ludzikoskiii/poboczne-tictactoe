@@ -9,7 +9,7 @@
 <body>
     <main>
         <div class="blok-glowny" id="blok-glowny">
-            <div class="czasomierz">
+            <div class="czasomierz" id="czasomierz">
 
             </div>
             <div class="blok-gra" id="blok-gra">
@@ -59,16 +59,22 @@
                 this.sekundy = sekundy;
             }
         }
-        gracz1 = new gracz("Gracz 1",0,"X",1);
-        gracz2 = new gracz("Gracz 2",0,"O",2);
+        
         function czasomierz(iloscMinut){
             let sekundy = iloscMinut * 60;
+            setInterval(() => {
+                document.querySelector("#czasomierz").innerHTML = `Pozostały czas: ${Math.floor(sekundy / 60)}:${sekundy % 60 < 10 ? "0" + sekundy % 60 : sekundy % 60}`;
+                sekundy--;
+            }, 1000);
         }
         function stopCzasomierz(mojCzasomierz){
             clearInterval(mojCzasomierz)
         }
         function startujGre() {
+            gracz1 = new gracz("Gracz 1",0,"X",1);
+            gracz2 = new gracz("Gracz 2",0,"O",2);
             parametryGry = new parametryGry(1,false,false);
+            czasomierz(15);
             
         }
         function zmianaGracza(){
@@ -91,9 +97,7 @@
         }
         function sprawdzenieWygranej(){
             document.querySelectorAll(".kratki").forEach((kratka) => {
-                if(kratka.innerHTML !== ""){
-                    
-                }
+                
             })
         }
         function postawFigure(kratka){
