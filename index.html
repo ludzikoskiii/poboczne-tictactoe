@@ -32,7 +32,7 @@
             </select>
         </div>
         <button type="button" onclick="startujGre()">Start</button>
-        <button type="button" onclick="koniecGry()">Stop</button>
+        <button type="button" onclick="koniecGry(czasomierz())">Stop</button>
         <div class="blok-wynik" id="blok-wynik" >
 
         </div>
@@ -112,15 +112,24 @@
             }
             return figura;
         }
-        function sprawdzenieSeriiZnakow(tablicaZnakow){
-            for(let i = 0;i >= tablicaZnakow.length;i++){
-                if(tablicaZnakow.krzyzyki.length >= 3){
-                    return("Mamy potencjalna kombinacje krzyzykow")
+        function sprawdzanieKombinacji(tablica){
+                for (let i = 0; i < tablica.length; i++) {
+                        for (let j = 1; j < tablica.length; j++) {
+                            if(tablica[j] - 1 == tablica[i] && tablica[j] + 1 == tablica[i] + 2){
+                                return("sukces: " + tablica);
+                            }
+                        }
+                    }
+        }
+        function sprawdzenieSeriiZnakow(tablicakrzyzykow, tablicakolek){
+            if(tablicakrzyzykow.length >= 3){
+                    console.log(sprawdzanieKombinacji(tablicakrzyzykow));
+                    console.log("Mamy potencjalna kombinacje krzyzykow " + tablicakrzyzykow);
                 }
-                if(tablicaZnakow.kola.length >= 3){
-                    return("Mamy potencjalna kombinacje kol")
-                }
-            }
+         if(tablicakolek.length >= 3){
+            console.log(sprawdzanieKombinacji(tablicakolek));
+                  console.log("Mamy potencjalna kombinacje kol " + tablicakolek)
+         }
         }
 
         function sprawdzenieWygranej(){
@@ -129,15 +138,13 @@
             let tablicaIdZnakow = [];
             document.querySelectorAll(".kratki").forEach((kratka) => {
                 if(kratka.classList.contains("krzyzyk")){
-                    tablicakrzyzykow.push(kratka.id);
+                    tablicakrzyzykow.push(parseInt(kratka.id));
                 } 
                 if(kratka.classList.contains("kolko")){
-                    tablicakolek.push(kratka.id);
+                    tablicakolek.push(parseInt(kratka.id));
                 }
             })
-
-            tablicaIdZnakow.push({krzyzyki: tablicakrzyzykow, kola: tablicakolek });
-            sprawdzenieSeriiZnakow(tablicaIdZnakow);
+            sprawdzenieSeriiZnakow(tablicakrzyzykow, tablicakolek);
         }
         
         function postawFigure(kratka){
@@ -151,8 +158,8 @@
             kratka.classList.add(figura);
             kratka.innerHTML = `<img src="img/${figura}.png" alt="${figura === "krzyzyk" ? "Krzyżyk" : "Kółko"}" draggable="false">`;
             
-            console.log(sprawdzenieWygranej());
-            zmianaGracza()
+            sprawdzenieWygranej();
+            zmianaGracza();
 
         }
         
