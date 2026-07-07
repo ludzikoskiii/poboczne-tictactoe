@@ -83,24 +83,27 @@ const blokWynik = document.querySelector("#blok-wynik");
         }
 
         function sprawdzanieKombinacji(tablica){
-                for (let i = 0; i < tablica.length; i++) {
-                        for (let j = 1; j < tablica.length; j++) {
-                            if(tablica[j] - 1 == tablica[i] && tablica[j] + 1 == tablica[i] + 2){
-                                return("sukces: " + tablica);
-                            }
-                        }
-                    }
+                let kombinacje = [
+                    [1, 2, 3],
+                    [4, 5, 6],
+                    [7, 8, 9],
+                    [1, 4, 7],
+                    [3, 6, 9],
+                    [1, 5, 9],
+                    [3, 5, 7]
+                ]
+                if(tablica.length >= 3){
+                   kombinacje.forEach((kombinacja) => {
+                        if(kombinacja.every(element => tablica.includes(element))){
+                            console.log("Wygrana!");
+                        };
+                   })
+        }
         }
         
         function sprawdzenieSeriiZnakow(tablicakrzyzykow, tablicakolek){
-        if(tablicakrzyzykow.length >= 3){
-                 console.log(sprawdzanieKombinacji(tablicakrzyzykow));
-                 console.log("Mamy potencjalna kombinacje krzyzykow " + tablicakrzyzykow);
-        }
-         if(tablicakolek.length >= 3){
-            console.log(sprawdzanieKombinacji(tablicakolek));
-                  console.log("Mamy potencjalna kombinacje kol " + tablicakolek)
-         }
+            sprawdzanieKombinacji(tablicakrzyzykow)
+            sprawdzanieKombinacji(tablicakolek)
         }
 
         function sprawdzenieWygranej(){
