@@ -13,17 +13,26 @@
 
             </div>
             <div class="blok-gra" id="blok-gra">
-                    <div id="kratka-1" class="kratki" onclick="postawFigure(this)"></div>
-                    <div id="kratka-2" class="kratki" onclick="postawFigure(this)"></div>
-                    <div id="kratka-3" class="kratki" onclick="postawFigure(this)"></div>
-                    <div id="kratka-4" class="kratki" onclick="postawFigure(this)"></div>
-                    <div id="kratka-5" class="kratki" onclick="postawFigure(this)"></div>
-                    <div id="kratka-6" class="kratki" onclick="postawFigure(this)"></div>
-                    <div id="kratka-7" class="kratki" onclick="postawFigure(this)"></div>
-                    <div id="kratka-8" class="kratki" onclick="postawFigure(this)"></div>
-                    <div id="kratka-9" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="1" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="2" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="3" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="4" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="5" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="6" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="7" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="8" class="kratki" onclick="postawFigure(this)"></div>
+                    <div id="9" class="kratki" onclick="postawFigure(this)"></div>
             </div>
+            <select name="czas" id="wybor-czasu">
+                <option value=""></option>
+                <option value="0">Bez limitu</option>
+                <option value="3">3 minuty</option>
+                <option value="5">5 minut</option>
+                <option value="10">10 minut</option>
+            </select>
         </div>
+        <button type="button" onclick="startujGre()">Start</button>
+        <button type="button" onclick="koniecGry()">Stop</button>
         <div class="blok-wynik" id="blok-wynik" >
 
         </div>
@@ -37,6 +46,9 @@
                 this.wynik = wynik;
                 this.figura = figura;
                 this.numerGracza = numerGracza;
+            }
+            ileWygranych(){
+                return this.wynik;
             }
         }
         class parametryGry{
@@ -69,13 +81,18 @@
         }
         function stopCzasomierz(mojCzasomierz){
             clearInterval(mojCzasomierz)
+            let sekundy = mojCzasomierz.sekundy;
+            document.querySelector("#czasomierz").innerHTML = `Pozostały czas: ${Math.floor(sekundy / 60)}:${sekundy % 60 < 10 ? "0" + sekundy % 60 : sekundy % 60}`;
         }
         function startujGre() {
+            const iloscMinut = document.querySelector("#wybor-czasu").value;
             gracz1 = new gracz("Gracz 1",0,"X",1);
             gracz2 = new gracz("Gracz 2",0,"O",2);
             parametryGry = new parametryGry(1,false,false);
-            czasomierz(15);
-            
+            czasomierz(iloscMinut);
+        }
+        function koniecGry(){
+            stopCzasomierz(czasomierz);
         }
         function zmianaGracza(){
             if(parametryGry.aktualnyGracz === 1){
@@ -88,28 +105,57 @@
         function sprawdzenieAktualnejFigury(){
              let figura = "";
             if(parametryGry.aktualnyGracz === 1){
-                figura = "krzyzyk.png";
+                figura = "krzyzyk";
             }
             else{
-                figura = "kolko.png";
+                figura = "kolko";
             }
             return figura;
         }
-        function sprawdzenieWygranej(){
-            document.querySelectorAll(".kratki").forEach((kratka) => {
-                
-            })
+        function sprawdzenieSeriiZnakow(tablicaZnakow){
+            for(let i = 0;i >= tablicaZnakow.length;i++){
+                if(tablicaZnakow.krzyzyki.length >= 3){
+                    return("Mamy potencjalna kombinacje krzyzykow")
+                }
+                if(tablicaZnakow.kola.length >= 3){
+                    return("Mamy potencjalna kombinacje kol")
+                }
+            }
         }
+
+        function sprawdzenieWygranej(){
+            let tablicakrzyzykow = [];
+            let tablicakolek = [];
+            let tablicaIdZnakow = [];
+            document.querySelectorAll(".kratki").forEach((kratka) => {
+                if(kratka.classList.contains("krzyzyk")){
+                    tablicakrzyzykow.push(kratka.id);
+                } 
+                if(kratka.classList.contains("kolko")){
+                    tablicakolek.push(kratka.id);
+                }
+            })
+
+            tablicaIdZnakow.push({krzyzyki: tablicakrzyzykow, kola: tablicakolek });
+            sprawdzenieSeriiZnakow(tablicaIdZnakow);
+        }
+        
         function postawFigure(kratka){
+           const kratki = document.querySelectorAll(".kratki"); 
            let figura = sprawdzenieAktualnejFigury();
+
            if(kratka.innerHTML !== ""){
                 return;
             }
-            kratka.innerHTML = `<img src="img/${figura}" alt="${figura === "krzyzyk.png" ? "Krzyżyk" : "Kółko"}" draggable="false">`;
+
+            kratka.classList.add(figura);
+            kratka.innerHTML = `<img src="img/${figura}.png" alt="${figura === "krzyzyk" ? "Krzyżyk" : "Kółko"}" draggable="false">`;
+            
+            console.log(sprawdzenieWygranej());
             zmianaGracza()
+
         }
         
-        startujGre()
     </script>
 </body>
 </html>
