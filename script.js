@@ -103,13 +103,12 @@ class gracz{
                     [1, 5, 9],
                     [3, 5, 7]
                 ]
-                if(tablica.length >= 3){
                    kombinacje.forEach((kombinacja) => {
                         if(kombinacja.every(element => tablica.includes(element))){
-                            return true;
+                            console.log(`Gracz ${parametryGry.aktualnyGracz} wygrał!`);
                         };
                    })
-        }
+            return false;
         }
 //funkcja nie ma zastosowania 
         function sprawdzenieSeriiZnakow(tablicakrzyzykow, tablicakolek){
@@ -129,14 +128,19 @@ class gracz{
                     tablicakolek.push(parseInt(kratka.id));
                 }
             })
-            if(sprawdzanieKombinacji(tablicakrzyzykow)){
-                gracz1.wynik++
-                console.log(`Wynik gracza 1: ${gracz1.wynik}, Wynik gracza 2: ${gracz2.wynik}`);
+            if(tablicakrzyzykow.length >= 3){
+                if(sprawdzanieKombinacji(tablicakrzyzykow) === true){
+                     gracz1.wynik++
+                    console.log(`Wynik gracza 1: ${gracz1.wynik}, Wynik gracza 2: ${gracz2.wynik}`);
+                }
             }
-            if(sprawdzanieKombinacji(tablicakolek)){
-                gracz2.wynik++
-                console.log(`Wynik gracza 1: ${gracz1.wynik}, Wynik gracza 2: ${gracz2.wynik}`);
+            if(tablicakolek.length >= 3){
+                if(sprawdzanieKombinacji(tablicakolek) === true){
+                        gracz2.wynik++
+                        console.log(`Wynik gracza 1: ${gracz1.wynik}, Wynik gracza 2: ${gracz2.wynik}`);
+                }
             }
+
            
         }
 //funkcja postawienia figury na planszy(wyswietla odpowiedni obrazek w kratce,dodaje odpowiedni znak do klasy danej kratki i zmienia aktualnego gracza)
