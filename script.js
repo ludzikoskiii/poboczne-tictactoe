@@ -69,10 +69,18 @@ class gracz{
             czasomierz(iloscMinut);
         }
         function resetFigurWKratkach(){
+           const kratki = document.querySelectorAll(".kratki"); 
 
+        
+           kratki.forEach(element => {
+                element.classList.remove('krzyzyk', 'kolko');
+                element.innerHTML = ``;
+           })
+           
         }
 //reset czasomierza i reset parametrow gry
         function koniecGry(){
+            resetFigurWKratkach()
             stopCzasomierz(czasomierz);
         }
 //zmiana aktualnego gracza podczas gry po postawieniu figury       
