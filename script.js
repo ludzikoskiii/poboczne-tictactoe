@@ -49,11 +49,15 @@ const blokWynik = document.querySelector("#blok-wynik");
             let sekundy = mojCzasomierz.sekundy;
             document.querySelector("#czasomierz").innerHTML = `Pozostały czas: ${Math.floor(sekundy / 60)}:${sekundy % 60 < 10 ? "0" + sekundy % 60 : sekundy % 60}`;
         }
-        
+        function utworzGraczy(){
+            // const nazwaGracza1 = document.querySelector("#nazwa-gracza-1").value;
+            // const nazwaGracza2 = document.querySelector("#nazwa-gracza-2").value;
+            gracz1 = new gracz("nazwaGracza1",0,"X",1);
+            gracz2 = new gracz("nazwaGracza2",0,"O",2);
+        }
         function startujGre() {
             const iloscMinut = document.querySelector("#wybor-czasu").value;
-            gracz1 = new gracz("Gracz 1",0,"X",1);
-            gracz2 = new gracz("Gracz 2",0,"O",2);
+            
             parametryGry = new parametryGry(1,false,false);
             czasomierz(iloscMinut);
         }
@@ -95,15 +99,15 @@ const blokWynik = document.querySelector("#blok-wynik");
                 if(tablica.length >= 3){
                    kombinacje.forEach((kombinacja) => {
                         if(kombinacja.every(element => tablica.includes(element))){
-                            console.log("Wygrana!");
+                            return true;
                         };
                    })
         }
         }
         
         function sprawdzenieSeriiZnakow(tablicakrzyzykow, tablicakolek){
-            sprawdzanieKombinacji(tablicakrzyzykow)
-            sprawdzanieKombinacji(tablicakolek)
+            
+            
         }
 
         function sprawdzenieWygranej(){
@@ -118,7 +122,15 @@ const blokWynik = document.querySelector("#blok-wynik");
                     tablicakolek.push(parseInt(kratka.id));
                 }
             })
-            sprawdzenieSeriiZnakow(tablicakrzyzykow, tablicakolek);
+            if(sprawdzanieKombinacji(tablicakrzyzykow)){
+                gracz1.wynik++
+                console.log(`Wynik gracza 1: ${gracz1.wynik}, Wynik gracza 2: ${gracz2.wynik}`);
+            }
+            if(sprawdzanieKombinacji(tablicakolek)){
+                gracz2.wynik++
+                console.log(`Wynik gracza 1: ${gracz1.wynik}, Wynik gracza 2: ${gracz2.wynik}`);
+            }
+           
         }
         
         function postawFigure(kratka){
@@ -132,7 +144,7 @@ const blokWynik = document.querySelector("#blok-wynik");
             kratka.classList.add(figura);
             kratka.innerHTML = `<img src="img/${figura}.png" alt="${figura === "krzyzyk" ? "Krzyżyk" : "Kółko"}" draggable="false">`;
             
-            sprawdzenieWygranej();
+            sprawdzenieWygranej()
             zmianaGracza();
         }
-        
+        utworzGraczy();
