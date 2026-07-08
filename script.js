@@ -1,6 +1,6 @@
 // pobierz blok glowny i blok wyników
 const blokGlowny = document.querySelector("#blok-glowny");
-const blokWynik = document.querySelector("#blok-wynik");
+
 
 // klasa gracza
 class gracz{
@@ -68,6 +68,9 @@ class gracz{
             parametryGry = new parametryGry(1,false,false);
             czasomierz(iloscMinut);
         }
+        function resetFigurWKratkach(){
+
+        }
 //reset czasomierza i reset parametrow gry
         function koniecGry(){
             stopCzasomierz(czasomierz);
@@ -93,7 +96,7 @@ class gracz{
             return figura;
         }
 //sprawdzenie czy gracz wygrał poprzez sprawdzenie kombinacji
-        function sprawdzanieKombinacji(tablica){
+        function sprawdzanieKombinacji(tablica, gracz){
                 let kombinacje = [
                     [1, 2, 3],
                     [4, 5, 6],
@@ -103,20 +106,17 @@ class gracz{
                     [1, 5, 9],
                     [3, 5, 7]
                 ]
+                if(tablica.length >= 3){
                    kombinacje.forEach((kombinacja) => {
                         if(kombinacja.every(element => tablica.includes(element))){
-                            console.log(`Gracz ${parametryGry.aktualnyGracz} wygrał!`);
+                           gracz.wynik++;
                         };
                    })
-            return false;
-        }
-//funkcja nie ma zastosowania 
-        function sprawdzenieSeriiZnakow(tablicakrzyzykow, tablicakolek){
-            
-            
+               }
         }
 //funkcja sprawdzająca wygraną gracza i aktualizująca wynik(nie dziala)
         function sprawdzenieWygranej(){
+            const blokWynik = document.querySelector("#blok-wynik");
             let tablicakrzyzykow = [];
             let tablicakolek = [];
             let tablicaIdZnakow = [];
@@ -128,20 +128,16 @@ class gracz{
                     tablicakolek.push(parseInt(kratka.id));
                 }
             })
-            if(tablicakrzyzykow.length >= 3){
-                if(sprawdzanieKombinacji(tablicakrzyzykow) === true){
-                     gracz1.wynik++
-                    console.log(`Wynik gracza 1: ${gracz1.wynik}, Wynik gracza 2: ${gracz2.wynik}`);
-                }
+                sprawdzanieKombinacji(tablicakrzyzykow, gracz1);
+                sprawdzanieKombinacji(tablicakolek, gracz2);
+            if(gracz1.wynik > 0){
+                blokWynik.innerHTML = `${gracz1.wynik} - ${gracz2.wynik}`;
+                koniecGry();
             }
-            if(tablicakolek.length >= 3){
-                if(sprawdzanieKombinacji(tablicakolek) === true){
-                        gracz2.wynik++
-                        console.log(`Wynik gracza 1: ${gracz1.wynik}, Wynik gracza 2: ${gracz2.wynik}`);
-                }
+            if(gracz2.wynik > 0){
+                blokWynik.innerHTML = `${gracz1.wynik} - ${gracz2.wynik}`;
+                koniecGry();
             }
-
-           
         }
 //funkcja postawienia figury na planszy(wyswietla odpowiedni obrazek w kratce,dodaje odpowiedni znak do klasy danej kratki i zmienia aktualnego gracza)
         function postawFigure(kratka){
