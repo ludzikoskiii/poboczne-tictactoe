@@ -1,9 +1,7 @@
 // pobierz blok glowny i blok wyników
 const blokGlowny = document.querySelector("#blok-glowny");
-
-
 // klasa gracza
-class gracz{
+        class gracz{
             constructor(nazwa,wynik,figura,numerGracza){
                 this.nazwa = nazwa;
                 this.wynik = wynik;
@@ -40,19 +38,30 @@ class gracz{
                 this.sekundy = sekundy;
             }
         }
+        function stworzCzasomierz(){
+            let mojCzasomierz = new parametryCzasomierza(document.querySelector("#czasomierz"), sekundy);
+            return mojCzasomierz;
+        }
 //rozpoczecie czasomierza       
         function czasomierz(iloscMinut){
             let sekundy = iloscMinut * 60;
+            const mojCzasomierz = stworzCzasomierz();
             setInterval(() => {
-                document.querySelector("#czasomierz").innerHTML = `Pozostały czas: ${Math.floor(sekundy / 60)}:${sekundy % 60 < 10 ? "0" + sekundy % 60 : sekundy % 60}`;
-                sekundy--;
+                document.querySelector("#czasomierz").innerHTML = `Pozostały czas: ${Math.floor(mojCzasomierz.sekundy / 60)}:${mojCzasomierz.sekundy % 60 < 10 ? "0" + mojCzasomierz.sekundy % 60 : mojCzasomierz.sekundy % 60}`;
+                mojCzasomierz.sekundy--;
             }, 1000);
+            return mojCzasomierz;
         }
 //zatrzymanie czasomierza
         function stopCzasomierz(mojCzasomierz){
-            clearInterval(mojCzasomierz)
             let sekundy = mojCzasomierz.sekundy;
             document.querySelector("#czasomierz").innerHTML = `Pozostały czas: ${Math.floor(sekundy / 60)}:${sekundy % 60 < 10 ? "0" + sekundy % 60 : sekundy % 60}`;
+            clearInterval(mojCzasomierz)
+        }
+        function resetGry(){
+             const iloscMinut = document.querySelector("#wybor-czasu").value;
+             czasomierz(iloscMinut);
+             resetFigurWKratkach();
         }
 //utworzenie instancji klasy gracz
         function utworzGraczy(){
@@ -70,8 +79,6 @@ class gracz{
         }
         function resetFigurWKratkach(){
            const kratki = document.querySelectorAll(".kratki"); 
-
-        
            kratki.forEach(element => {
                 element.classList.remove('krzyzyk', 'kolko');
                 element.innerHTML = ``;
@@ -79,9 +86,9 @@ class gracz{
            
         }
 //reset czasomierza i reset parametrow gry
-        function koniecGry(){
+        function koniecGry(mojCzasomierz){
             resetFigurWKratkach()
-            stopCzasomierz(czasomierz);
+            stopCzasomierz(mojCzasomierz);
         }
 //zmiana aktualnego gracza podczas gry po postawieniu figury       
         function zmianaGracza(){
@@ -140,11 +147,13 @@ class gracz{
                 sprawdzanieKombinacji(tablicakolek, gracz2);
             if(gracz1.wynik > 0){
                 blokWynik.innerHTML = `${gracz1.wynik} - ${gracz2.wynik}`;
-                koniecGry();
+                koniecGry(mojCzasomierz);
+                resetGry();
             }
             if(gracz2.wynik > 0){
                 blokWynik.innerHTML = `${gracz1.wynik} - ${gracz2.wynik}`;
-                koniecGry();
+                koniecGry(mojCzasomierz);
+                resetGry();
             }
         }
 //funkcja postawienia figury na planszy(wyswietla odpowiedni obrazek w kratce,dodaje odpowiedni znak do klasy danej kratki i zmienia aktualnego gracza)
@@ -161,5 +170,5 @@ class gracz{
             
             sprawdzenieWygranej()
             zmianaGracza();
-        }
+    }
         utworzGraczy();
