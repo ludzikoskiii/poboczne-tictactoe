@@ -40,7 +40,10 @@ const blokGlowny = document.querySelector("#blok-glowny");
         }
 //rozpoczecie czasomierza       
         function czasomierz(iloscMinut){
-            let sekundy = iloscMinut * 60;
+            if(iloscMinut == 0){
+                return false;
+            }else{
+                 let sekundy = iloscMinut * 60;
             const mojCzasomierz = new parametryCzasomierza(document.querySelector("#czasomierz"), sekundy);
             mojCzasomierz.intervalId = setInterval(() => {
                 document.querySelector("#czasomierz").innerHTML =
@@ -48,7 +51,9 @@ const blokGlowny = document.querySelector("#blok-glowny");
                 mojCzasomierz.sekundy--;
             }, 1000);
 
-        return mojCzasomierz;
+        
+            }
+           return mojCzasomierz;
         }
 //zatrzymanie czasomierza
         function stopCzasomierz(mojCzasomierz){
