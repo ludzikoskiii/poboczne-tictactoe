@@ -43,20 +43,20 @@ const blokGlowny = document.querySelector("#blok-glowny");
             if(iloscMinut == 0){
                 return false;
             }else{
-                 let sekundy = iloscMinut * 60;
+            let sekundy = iloscMinut * 60;
             const mojCzasomierz = new parametryCzasomierza(document.querySelector("#czasomierz"), sekundy);
+            }
             mojCzasomierz.intervalId = setInterval(() => {
                 document.querySelector("#czasomierz").innerHTML =
                     `Pozostały czas: ${Math.floor(mojCzasomierz.sekundy / 60)}:${mojCzasomierz.sekundy % 60 < 10 ? "0" + mojCzasomierz.sekundy % 60 : mojCzasomierz.sekundy % 60}`;
                 mojCzasomierz.sekundy--;
             }, 1000);
-
-        
-            }
            return mojCzasomierz;
         }
 //zatrzymanie czasomierza
         function stopCzasomierz(mojCzasomierz){
+            if(!mojCzasomierz) return;
+            clearInterval(mojCzasomierz.intervalId);
             clearInterval(mojCzasomierz.intervalId);
         }
 
